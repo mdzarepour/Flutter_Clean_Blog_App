@@ -1,5 +1,6 @@
-import 'package:blog/app_secrets.dart';
+import 'package:blog/core/constants/app_secrets.dart';
 import 'package:blog/core/theme/app_theme.dart';
+import 'package:blog/features/auth/presentation/pages/onboarding_page.dart';
 import 'package:blog/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -21,8 +22,9 @@ class Application extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      //   theme: AppTheme.darkTheme,
-      home: Scaffold(body: Center(child: Text('data'))),
+      theme: AppTheme.darkTheme,
+      home: OnboardingPage(),
     );
   }
 }
+//TODO turn on keep alive in onboarding page
