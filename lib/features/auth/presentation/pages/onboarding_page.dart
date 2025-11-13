@@ -1,9 +1,11 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:blog/core/constants/app_colors.dart';
-import 'package:blog/core/constants/app_strings.dart';
+import 'package:blog/common/constants/app_colors.dart';
+import 'package:blog/common/constants/app_strings.dart';
+import 'package:blog/core/router/router_names.dart';
 import 'package:blog/features/auth/presentation/widgets/onboarding_button.dart';
 import 'package:blog/features/auth/presentation/widgets/onboarding_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -70,16 +72,39 @@ class _OnboardingPageState extends State<OnboardingPage>
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 10,
         children: [
-          OnboardingButton(onPressed: () {}, title: 'Skip'),
-          OnboardingButton(onPressed: () {}, title: 'next'),
+          OnboardingButton(
+            onPressed: () {
+              pageController.animateToPage(
+                onboardingWidgets.length - 1,
+                duration: const Duration(milliseconds: 800),
+                curve: Curves.easeInOut,
+              );
+            },
+            title: OnboardingStrings.skip,
+          ),
+          OnboardingButton(
+            onPressed: () {
+              pageController.nextPage(
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeInOut,
+              );
+            },
+            title: OnboardingStrings.next,
+          ),
         ],
       );
     } else {
       return FadeInUp(
+        curve: Curves.easeInOut,
         duration: Duration(milliseconds: 600),
-        from: 20,
+        from: 10,
         child: Row(
-          children: [OnboardingButton(onPressed: () {}, title: 'start')],
+          children: [
+            OnboardingButton(
+              onPressed: () => context.pushReplacement(RouterNames.signinPage),
+              title: OnboardingStrings.start,
+            ),
+          ],
         ),
       );
     }

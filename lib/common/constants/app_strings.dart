@@ -1,4 +1,8 @@
 class OnboardingStrings {
+  static const String start = 'start';
+  static const String next = 'next';
+  static const String skip = 'skip';
+
   static const String firstPageTitle = 'Welcome To Blog Dear Friend';
   static const String firstPageDescription =
       'create you account and start exploring you favorite topics';

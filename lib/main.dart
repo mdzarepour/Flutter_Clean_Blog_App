@@ -1,8 +1,9 @@
-import 'package:blog/core/constants/app_secrets.dart';
-import 'package:blog/core/theme/app_theme.dart';
-import 'package:blog/features/auth/presentation/pages/onboarding_page.dart';
+import 'package:blog/common/constants/app_secrets.dart';
+import 'package:blog/common/theme/app_theme.dart';
+import 'package:blog/core/router/router.dart';
 import 'package:blog/locator.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main(List<String> args) async {
@@ -20,11 +21,13 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: locator.get<GoRouter>(),
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
-      home: OnboardingPage(),
     );
   }
 }
+
 //TODO turn on keep alive in onboarding page
+//TODO use go router for navigations
