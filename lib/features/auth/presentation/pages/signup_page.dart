@@ -1,10 +1,9 @@
-import 'package:blog/common/constants/app_colors.dart';
 import 'package:blog/common/theme/app_texttheme.dart';
 import 'package:blog/core/router/router_names.dart';
 import 'package:blog/core/services/snackbar_service.dart';
-import 'package:blog/features/auth/data/models/signin_model.dart';
+import 'package:blog/features/auth/data/models/signup_model.dart';
 import 'package:blog/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:blog/features/auth/presentation/bloc/status/signin_status.dart';
+import 'package:blog/features/auth/presentation/bloc/status/signup_status.dart';
 import 'package:blog/features/auth/presentation/widgets/auth_field.dart';
 import 'package:blog/features/auth/presentation/widgets/link_button.dart';
 import 'package:blog/locator.dart';
@@ -12,20 +11,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'
-    show AuthResponse, Supabase, SupabaseClient, UserAttributes, UserResponse;
 
-class SigninPage extends StatefulWidget {
-  const SigninPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<SigninPage> createState() => _SigninPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _SigninPageState extends State<SigninPage> {
+class _SignupPageState extends State<SignupPage> {
   final SnackbarService snackbarService = locator.get();
   final GlobalKey<FormState> formKey = GlobalKey();
 
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -42,6 +40,7 @@ class _SigninPageState extends State<SigninPage> {
             children: [
               _buildTitle(),
               SizedBox(height: 50),
+              _buildUsernameField(),
               SizedBox(height: 20),
               _buildEmailField(),
               SizedBox(height: 20),
@@ -49,23 +48,15 @@ class _SigninPageState extends State<SigninPage> {
               SizedBox(height: 30),
               _buildSignupButton(),
               SizedBox(height: 20),
-              signupLink(),
+              LinkButton(
+                title: 'Login',
+                text: 'Already have an account?',
+                routeName: RouterNames.signinPage,
+              ),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(CupertinoIcons.question),
-        onPressed: () => showBottomSheet(context),
-      ),
-    );
-  }
-
-  LinkButton signupLink() {
-    return LinkButton(
-      title: 'SignUp',
-      text: 'Don\'t have an account?',
-      routeName: RouterNames.signupPage,
     );
   }
 
@@ -73,7 +64,15 @@ class _SigninPageState extends State<SigninPage> {
     return Text(
       textAlign: TextAlign.center,
       style: AppTexttheme.white30PoppinsBold,
-      'Login To Blog',
+      'Sign Up Here ',
+    );
+  }
+
+  AuthField _buildUsernameField() {
+    return AuthField(
+      hint: 'username',
+      icon: CupertinoIcons.person,
+      controller: usernameController,
     );
   }
 
@@ -98,9 +97,10 @@ class _SigninPageState extends State<SigninPage> {
       onPressed: () {
         if (formKey.currentState!.validate()) {
           BlocProvider.of<AuthBloc>(context).add(
-            SigninEvent(
-              signinModel: SigninModel(
+            SignupEvent(
+              signupModel: SignupModel(
                 email: emailController.text,
+                username: usernameController.text,
                 password: passwordController.text,
               ),
             ),
@@ -109,20 +109,23 @@ class _SigninPageState extends State<SigninPage> {
       },
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          final status = state.signinStatus;
-          if (status is SigninFail) {
+          final status = state.signupStatus;
+          if (status is SignupFail) {
             snackbarService.showSnackbar(message: status.errorMessage);
           }
-          if (status is SigninSuccess) {
-            context.push(RouterNames.homePage);
+          if (status is SignupSuccess) {
+            snackbarService.showSnackbar(
+              message: 'please verify you email then login',
+            );
+            context.go(RouterNames.signinPage);
           }
         },
         builder: (context, state) {
-          final status = state.signinStatus;
-          if (status is SigninInitial) {
-            return Text('Login');
+          final status = state.signupStatus;
+          if (status is SignupInitial) {
+            return Text('Sign Up');
           }
-          if (status is SigninLoading) {
+          if (status is SignupLoading) {
             return CircularProgressIndicator();
           }
           return SizedBox.shrink();
@@ -131,54 +134,9 @@ class _SigninPageState extends State<SigninPage> {
     );
   }
 
-  showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-          child: Column(
-            spacing: 15,
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.materialSoftGrey,
-                ),
-                child: Text('i dont get verification email'),
-                onPressed: () {},
-              ),
-              FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.materialSoftGrey,
-                ),
-                child: Text('i forgot my password'),
-                onPressed: () => _resetPass(),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  _resetPass() async {
-    print('loading');
-    final SupabaseClient supabaseClient = Supabase.instance.client;
-    try {
-      UserResponse userResponse = await supabaseClient.auth.updateUser(
-        UserAttributes(email: 'mdzarepour@gmail.com', password: '123456789'),
-      );
-      print('done');
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
   @override
   void dispose() {
+    usernameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();

@@ -101,7 +101,7 @@ class _OnboardingPageState extends State<OnboardingPage>
         child: Row(
           children: [
             OnboardingButton(
-              onPressed: () => context.pushReplacement(RouterNames.signinPage),
+              onPressed: () => context.go(RouterNames.signinPage),
               title: OnboardingStrings.start,
             ),
           ],

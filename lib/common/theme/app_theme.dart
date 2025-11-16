@@ -1,13 +1,15 @@
 import 'package:blog/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_texttheme.dart';
 
 class AppTheme {
   AppTheme._();
+
   static ThemeData darkTheme = ThemeData(
+    scaffoldBackgroundColor: AppColors.materialFirstBlue,
     filledButtonTheme: _getFilledButton(),
     bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: AppColors.materialThirdBlue,
       clipBehavior: Clip.hardEdge,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -52,23 +54,22 @@ class AppTheme {
   }
 
   static InputDecorationTheme _getInpuTheme() {
+    OutlineInputBorder border(double radius) => OutlineInputBorder(
+      borderRadius: BorderRadius.circular(radius),
+      borderSide: BorderSide.none,
+    );
     return InputDecorationTheme(
       filled: true,
+      errorStyle: AppTexttheme.grey15DmSansRegular,
       fillColor: AppColors.materialThirdBlue,
-      contentPadding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-      hintStyle: GoogleFonts.dmSans(
-        fontSize: 13,
-        color: AppColors.materialWhite,
-        fontWeight: FontWeight.w400,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide.none,
-      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+      hintStyle: AppTexttheme.grey20DmSansRegular,
+      enabledBorder: border(10),
+      focusedBorder: border(20),
+      border: border(10),
+      errorBorder: border(10),
+      focusedErrorBorder: border(20),
+      disabledBorder: border(10),
     );
   }
 }

@@ -28,6 +28,11 @@ class AppTexttheme {
     color: AppColors.materialGrey,
     fontWeight: FontWeight.w400,
   );
+  static final TextStyle grey20DmSansRegular = GoogleFonts.dmSans(
+    fontSize: 20,
+    color: AppColors.materialGrey,
+    fontWeight: FontWeight.w400,
+  );
 
   static final TextStyle pink12DmSansBold = GoogleFonts.dmSans(
     fontSize: 12,

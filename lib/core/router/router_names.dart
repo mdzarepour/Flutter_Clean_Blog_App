@@ -1,4 +1,6 @@
 class RouterNames {
   static const String onboardingPage = '/';
-  static const String signinPage = '/signin_page';
+  static const String signinPage = '/signinpage';
+  static const String signupPage = '/signuppage';
+  static const String homePage = '/homepage';
 }
