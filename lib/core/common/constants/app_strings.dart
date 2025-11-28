@@ -15,3 +15,12 @@ class OnboardingStrings {
   static const String thirdPageDescription =
       'press start to create your own account';
 }
+
+class SigninStrings {
+  static const String email = 'Email';
+  static const String login = 'Login';
+  static const String password = 'password';
+  static const String dontGetEmail = 'resend verification email';
+  static const String forgotPassword = 'forgot my password';
+  static const String sendResetEmail = 'send reset email';
+}

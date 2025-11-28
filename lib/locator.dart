@@ -1,6 +1,6 @@
-import 'package:blog/common/constants/app_secrets.dart';
+import 'package:blog/core/common/constants/app_secrets.dart';
 import 'package:blog/core/router/router.dart';
-import 'package:blog/core/services/snackbar_service.dart';
+import 'package:blog/core/services/widget_service.dart';
 import 'package:blog/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:blog/features/auth/data/repository/auth_repository_imp.dart';
 import 'package:blog/features/auth/domain/repository/auth_repository.dart';
@@ -18,32 +18,35 @@ setupLocator() async {
     anonKey: AppSecrets.supabaseAnon,
   );
 
-  //external dependencies -->
+  // Register external dependencies
   locator.registerLazySingleton<SupabaseClient>(() => supabase.client);
-  // helper classes -->
-  locator.registerLazySingleton(() => SnackbarService());
-  locator.registerLazySingleton(
-    () => AppRouter(
-      supabaseClient: locator.get(),
-      snackbarService: locator.get(),
-    ).router,
-  );
-  // datsources -->
+
+  // Register helper classes
+  locator
+    ..registerLazySingleton(() => WidgetServices())
+    ..registerLazySingleton(
+      () => AppRouter(
+        supabase: locator.get(),
+        snackbarService: locator.get(),
+      ).router,
+    );
+
+  // Register data sources
   locator.registerLazySingleton<AuthRemoteDatasource>(
     () => AuthRemoteDatasourceImp(supabase: locator.get()),
   );
-  // repositories -->
+
+  // Register repositories
   locator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImp(authRemoteDatasource: locator.get()),
   );
-  // usecase -->
-  locator.registerLazySingleton(
-    () => SignupUsecase(authRepository: locator.get()),
-  );
-  locator.registerLazySingleton(
-    () => SigninUsecase(authRepository: locator.get()),
-  );
-  // blocs -->
+
+  // Register use cases
+  locator
+    ..registerLazySingleton(() => SignupUsecase(authRepository: locator.get()))
+    ..registerLazySingleton(() => SigninUsecase(authRepository: locator.get()));
+
+  // Register blocs
   locator.registerFactory(
     () => AuthBloc(signinUsecase: locator.get(), signupUsecase: locator.get()),
   );

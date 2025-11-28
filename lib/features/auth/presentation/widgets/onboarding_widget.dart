@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:blog/common/constants/app_colors.dart';
-import 'package:blog/common/theme/app_texttheme.dart';
+import 'package:blog/core/common/constants/app_colors.dart';
+import 'package:blog/core/common/theme/app_texttheme.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingWidget extends StatelessWidget {

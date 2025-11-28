@@ -1,4 +1,4 @@
-import 'package:blog/common/constants/app_colors.dart';
+import 'package:blog/core/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'app_texttheme.dart';
 
@@ -20,6 +20,16 @@ class AppTheme {
     ),
     floatingActionButtonTheme: _getFloatinButtonTheme(),
     inputDecorationTheme: _getInpuTheme(),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        fixedSize: Size(double.infinity, 60),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(10),
+        ),
+        elevation: 0,
+        backgroundColor: AppColors.materialSoftGrey,
+      ),
+    ),
     checkboxTheme: const CheckboxThemeData(),
     dividerTheme: _getDividerTheme(),
   );

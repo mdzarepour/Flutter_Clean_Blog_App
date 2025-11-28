@@ -1,5 +1,6 @@
 import 'package:blog/features/auth/data/models/signin_model.dart';
 import 'package:blog/features/auth/data/models/signup_model.dart';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class AuthRemoteDatasource {
@@ -18,7 +19,6 @@ class AuthRemoteDatasourceImp implements AuthRemoteDatasource {
         email: signupModel.email,
         password: signupModel.password,
         data: {'username': signupModel.username},
-        emailRedirectTo: 'http://localhost:3000/auth/callback',
       );
       return authResponse;
     } on AuthException {

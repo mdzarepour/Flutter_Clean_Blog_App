@@ -8,7 +8,6 @@ import 'package:blog/features/auth/presentation/bloc/status/signin_status.dart';
 import 'package:blog/features/auth/presentation/bloc/status/signup_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
-
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -22,6 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignupEvent>(signup);
     on<SigninEvent>(signin);
   }
+
   FutureOr<void> signin(event, emit) async {
     emit(state.coptyWith(newSigninStatus: SigninLoading()));
     final Either either = await signinUsecase.call(params: event.signinModel);
@@ -34,10 +34,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         emit(state.coptyWith(newSigninStatus: SigninInitial()));
       },
-      (authResponse) {
+      (userEntity) {
         emit(
           state.coptyWith(
-            newSigninStatus: SigninSuccess(authResponse: authResponse),
+            newSigninStatus: SigninSuccess(userEntity: userEntity),
           ),
         );
       },
@@ -56,10 +56,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         emit(state.coptyWith(newSignupStatus: SignupInitial()));
       },
-      (authResponse) {
+      (response) {
         emit(
           state.coptyWith(
-            newSignupStatus: SignupSuccess(authResponse: authResponse),
+            newSignupStatus: SignupSuccess(authResponse: response),
           ),
         );
       },

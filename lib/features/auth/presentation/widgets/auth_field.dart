@@ -1,16 +1,18 @@
-import 'package:blog/common/constants/app_colors.dart';
-import 'package:blog/common/theme/app_texttheme.dart';
+import 'package:blog/core/common/constants/app_colors.dart';
+import 'package:blog/core/common/theme/app_texttheme.dart';
 import 'package:flutter/material.dart';
 
 class AuthField extends StatelessWidget {
   final String hint;
   final IconData icon;
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final Color? color;
   const AuthField({
     super.key,
+    this.color,
     required this.hint,
     required this.icon,
-    required this.controller,
+    this.controller,
   });
 
   @override
@@ -20,6 +22,7 @@ class AuthField extends StatelessWidget {
       cursorColor: AppColors.materialGrey,
       style: AppTexttheme.grey20DmSansRegular,
       decoration: InputDecoration(
+        fillColor: color,
         hintText: hint,
         suffixIcon: Icon(color: AppColors.materialGrey, icon),
       ),

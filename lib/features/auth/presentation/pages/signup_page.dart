@@ -1,6 +1,6 @@
-import 'package:blog/common/theme/app_texttheme.dart';
+import 'package:blog/core/common/theme/app_texttheme.dart';
 import 'package:blog/core/router/router_names.dart';
-import 'package:blog/core/services/snackbar_service.dart';
+import 'package:blog/core/services/widget_service.dart';
 import 'package:blog/features/auth/data/models/signup_model.dart';
 import 'package:blog/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog/features/auth/presentation/bloc/status/signup_status.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -20,7 +21,8 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final SnackbarService snackbarService = locator.get();
+  final WidgetServices widgetServices = locator.get();
+  final SupabaseClient supabse = locator.get();
   final GlobalKey<FormState> formKey = GlobalKey();
 
   final TextEditingController usernameController = TextEditingController();
@@ -111,10 +113,10 @@ class _SignupPageState extends State<SignupPage> {
         listener: (context, state) {
           final status = state.signupStatus;
           if (status is SignupFail) {
-            snackbarService.showSnackbar(message: status.errorMessage);
+            widgetServices.showSnackbar(message: status.errorMessage);
           }
           if (status is SignupSuccess) {
-            snackbarService.showSnackbar(
+            widgetServices.showSnackbar(
               message: 'please verify you email then login',
             );
             context.go(RouterNames.signinPage);
@@ -136,9 +138,9 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   void dispose() {
+    super.dispose();
     usernameController.dispose();
     emailController.dispose();
     passwordController.dispose();
-    super.dispose();
   }
 }

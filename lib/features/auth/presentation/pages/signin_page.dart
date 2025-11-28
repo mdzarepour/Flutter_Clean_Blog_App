@@ -1,7 +1,7 @@
-import 'package:blog/common/constants/app_colors.dart';
-import 'package:blog/common/theme/app_texttheme.dart';
+import 'package:blog/core/common/constants/app_strings.dart';
+import 'package:blog/core/common/theme/app_texttheme.dart';
 import 'package:blog/core/router/router_names.dart';
-import 'package:blog/core/services/snackbar_service.dart';
+import 'package:blog/core/services/widget_service.dart';
 import 'package:blog/features/auth/data/models/signin_model.dart';
 import 'package:blog/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog/features/auth/presentation/bloc/status/signin_status.dart';
@@ -12,8 +12,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'
-    show AuthResponse, Supabase, SupabaseClient, UserAttributes, UserResponse;
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -23,7 +21,7 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-  final SnackbarService snackbarService = locator.get();
+  final WidgetServices widgetServices = locator.get();
   final GlobalKey<FormState> formKey = GlobalKey();
 
   final TextEditingController emailController = TextEditingController();
@@ -56,7 +54,7 @@ class _SigninPageState extends State<SigninPage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(CupertinoIcons.question),
-        onPressed: () => showBottomSheet(context),
+        onPressed: () => showHelpSheet(),
       ),
     );
   }
@@ -111,7 +109,7 @@ class _SigninPageState extends State<SigninPage> {
         listener: (context, state) {
           final status = state.signinStatus;
           if (status is SigninFail) {
-            snackbarService.showSnackbar(message: status.errorMessage);
+            widgetServices.showSnackbar(message: status.errorMessage);
           }
           if (status is SigninSuccess) {
             context.push(RouterNames.homePage);
@@ -120,7 +118,7 @@ class _SigninPageState extends State<SigninPage> {
         builder: (context, state) {
           final status = state.signinStatus;
           if (status is SigninInitial) {
-            return Text('Login');
+            return Text(SigninStrings.login);
           }
           if (status is SigninLoading) {
             return CircularProgressIndicator();
@@ -131,50 +129,25 @@ class _SigninPageState extends State<SigninPage> {
     );
   }
 
-  showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-          child: Column(
-            spacing: 15,
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.materialSoftGrey,
-                ),
-                child: Text('i dont get verification email'),
-                onPressed: () {},
-              ),
-              FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.materialSoftGrey,
-                ),
-                child: Text('i forgot my password'),
-                onPressed: () => _resetPass(),
-              ),
-            ],
+  showHelpSheet() {
+    widgetServices.showBottomSheet(
+      children: [
+        TextButton(
+          child: Text(
+            style: AppTexttheme.white17PoppinsRegular,
+            SigninStrings.forgotPassword,
           ),
-        );
-      },
+          onPressed: () {},
+        ),
+        TextButton(
+          onPressed: () {},
+          child: Text(
+            style: AppTexttheme.white17PoppinsRegular,
+            SigninStrings.dontGetEmail,
+          ),
+        ),
+      ],
     );
-  }
-
-  _resetPass() async {
-    print('loading');
-    final SupabaseClient supabaseClient = Supabase.instance.client;
-    try {
-      UserResponse userResponse = await supabaseClient.auth.updateUser(
-        UserAttributes(email: 'mdzarepour@gmail.com', password: '123456789'),
-      );
-      print('done');
-    } catch (e) {
-      print(e.toString());
-    }
   }
 
   @override

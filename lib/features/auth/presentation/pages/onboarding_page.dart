@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:blog/common/constants/app_colors.dart';
-import 'package:blog/common/constants/app_strings.dart';
+import 'package:blog/core/common/constants/app_colors.dart';
+import 'package:blog/core/common/constants/app_strings.dart';
 import 'package:blog/core/router/router_names.dart';
 import 'package:blog/features/auth/presentation/widgets/onboarding_button.dart';
 import 'package:blog/features/auth/presentation/widgets/onboarding_widget.dart';
