@@ -51,7 +51,6 @@ class _SignupPageState extends State<SignupPage> {
               _buildSignupButton(),
               SizedBox(height: 20),
               LinkButton(
-                title: 'Login',
                 text: 'Already have an account?',
                 routeName: RouterNames.signinPage,
               ),

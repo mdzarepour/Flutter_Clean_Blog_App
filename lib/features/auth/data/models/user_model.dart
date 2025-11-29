@@ -1,25 +1,26 @@
 import 'package:blog/features/auth/domain/entities/user_entity.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserModel extends UserEntity {
   UserModel({
+    required super.role,
     required super.id,
     required super.email,
     required super.username,
-    required super.aud,
+    required super.password,
     required super.createdAt,
-    required super.emailVerified,
     required super.updatedAt,
   });
 
-  factory UserModel.fromJson({required Map<String, dynamic> map}) {
+  factory UserModel.fromResponse({required User user}) {
     return UserModel(
-      id: map["id"].toString(),
-      email: map["email"].toString(),
-      username: map["user_metadata"]["username"].toString(),
-      aud: map["aud"].toString(),
-      createdAt: map["created_at"].toString(),
-      emailVerified: map["user_metadata"]["email_verified"].toString(),
-      updatedAt: map["updated_at"].toString(),
+      id: user.id,
+      email: user.email!,
+      username: user.userMetadata!['username'],
+      password: user.userMetadata!['password'],
+      createdAt: user.createdAt,
+      updatedAt: user.createdAt,
+      role: user.role!,
     );
   }
 
@@ -28,10 +29,10 @@ class UserModel extends UserEntity {
       id: id,
       email: email,
       username: username,
-      aud: aud,
       createdAt: createdAt,
-      emailVerified: emailVerified,
       updatedAt: updatedAt,
+      password: password,
+      role: role,
     );
   }
 }

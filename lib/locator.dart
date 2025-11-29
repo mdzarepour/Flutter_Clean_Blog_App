@@ -1,6 +1,7 @@
 import 'package:blog/core/common/constants/app_secrets.dart';
 import 'package:blog/core/router/router.dart';
 import 'package:blog/core/services/widget_service.dart';
+import 'package:blog/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:blog/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:blog/features/auth/data/repository/auth_repository_imp.dart';
 import 'package:blog/features/auth/domain/repository/auth_repository.dart';
@@ -32,13 +33,20 @@ setupLocator() async {
     );
 
   // Register data sources
-  locator.registerLazySingleton<AuthRemoteDatasource>(
-    () => AuthRemoteDatasourceImp(supabase: locator.get()),
-  );
+  locator
+    ..registerLazySingleton<AuthRemoteDatasource>(
+      () => AuthRemoteDatasourceImp(supabase: locator.get()),
+    )
+    ..registerLazySingleton<AuthLocalDatasource>(
+      () => AuthLocalDatasourceImp(supabase: locator.get()),
+    );
 
   // Register repositories
   locator.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImp(authRemoteDatasource: locator.get()),
+    () => AuthRepositoryImp(
+      authRemoteDatasource: locator.get(),
+      authLocalDatasource: locator.get(),
+    ),
   );
 
   // Register use cases

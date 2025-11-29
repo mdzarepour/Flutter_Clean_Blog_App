@@ -18,7 +18,10 @@ class AuthRemoteDatasourceImp implements AuthRemoteDatasource {
       final AuthResponse authResponse = await supabase.auth.signUp(
         email: signupModel.email,
         password: signupModel.password,
-        data: {'username': signupModel.username},
+        data: {
+          'username': signupModel.username,
+          'password': signupModel.password,
+        },
       );
       return authResponse;
     } on AuthException {
@@ -33,6 +36,7 @@ class AuthRemoteDatasourceImp implements AuthRemoteDatasource {
         email: signinModel.email,
         password: signinModel.password,
       );
+
       return authResponse;
     } on AuthException {
       rethrow;

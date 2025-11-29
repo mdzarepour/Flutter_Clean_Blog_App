@@ -1,16 +1,20 @@
+import 'package:blog/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:blog/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:blog/features/auth/data/models/signin_model.dart';
 import 'package:blog/features/auth/data/models/signup_model.dart';
 import 'package:blog/features/auth/data/models/user_model.dart';
-import 'package:blog/features/auth/domain/entities/user_entity.dart';
 import 'package:blog/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'
-    show AuthResponse, AuthException;
+    show AuthException, AuthResponse, PostgrestException;
 
 class AuthRepositoryImp implements AuthRepository {
   final AuthRemoteDatasource authRemoteDatasource;
-  AuthRepositoryImp({required this.authRemoteDatasource});
+  final AuthLocalDatasource authLocalDatasource;
+  AuthRepositoryImp({
+    required this.authRemoteDatasource,
+    required this.authLocalDatasource,
+  });
 
   @override
   Future<Either<String, AuthResponse>> signupUser({
@@ -28,19 +32,21 @@ class AuthRepositoryImp implements AuthRepository {
   }
 
   @override
-  Future<Either<String, UserEntity>> signinUser({
+  Future<Either<String, AuthResponse>> signinUser({
     required SigninModel signinModel,
   }) async {
     try {
       final AuthResponse authResponse = await authRemoteDatasource.signinUser(
         signinModel: signinModel,
       );
-      if (authResponse.user == null) return left('cant login now');
-      final UserModel userModel = UserModel.fromJson(
-        map: authResponse.user!.toJson(),
-      );
-
-      return right(userModel.toEntity());
+      if (authResponse.user == null) {
+        return left('cant login now');
+      }
+      final userModel = UserModel.fromResponse(user: authResponse.user!);
+      authLocalDatasource.saveUserInDB(userModel: userModel);
+      return right(authResponse);
+    } on PostgrestException catch (e) {
+      return left(e.message.toString());
     } on AuthException catch (e) {
       return left(e.message.toString());
     }

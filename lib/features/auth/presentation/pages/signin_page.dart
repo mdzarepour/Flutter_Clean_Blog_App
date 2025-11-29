@@ -61,7 +61,6 @@ class _SigninPageState extends State<SigninPage> {
 
   LinkButton signupLink() {
     return LinkButton(
-      title: 'SignUp',
       text: 'Don\'t have an account?',
       routeName: RouterNames.signupPage,
     );

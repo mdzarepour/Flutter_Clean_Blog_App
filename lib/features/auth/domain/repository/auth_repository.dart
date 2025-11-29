@@ -8,7 +8,7 @@ abstract interface class AuthRepository {
   Future<Either<String, AuthResponse>> signupUser({
     required SignupModel signupModel,
   });
-  Future<Either<String, UserEntity>> signinUser({
+  Future<Either<String, AuthResponse>> signinUser({
     required SigninModel signinModel,
   });
 }

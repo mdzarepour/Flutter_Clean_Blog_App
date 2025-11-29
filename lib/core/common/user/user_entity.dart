@@ -2,18 +2,18 @@ class UserEntity {
   final String id;
   final String email;
   final String username;
-  final String aud;
+  final String password;
   final String createdAt;
-  final String emailVerified;
   final String updatedAt;
+  final String role;
 
   UserEntity({
+    required this.role,
     required this.id,
     required this.email,
     required this.username,
-    required this.aud,
+    required this.password,
     required this.createdAt,
-    required this.emailVerified,
     required this.updatedAt,
   });
 }
