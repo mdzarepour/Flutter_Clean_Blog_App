@@ -1,9 +1,8 @@
-import 'package:blog/features/auth/domain/entities/user_entity.dart';
+import 'package:blog/core/common/user/user_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserModel extends UserEntity {
   UserModel({
-    required super.role,
     required super.id,
     required super.email,
     required super.username,
@@ -20,7 +19,16 @@ class UserModel extends UserEntity {
       password: user.userMetadata!['password'],
       createdAt: user.createdAt,
       updatedAt: user.createdAt,
-      role: user.role!,
+    );
+  }
+  factory UserModel.fromJson({required Map map}) {
+    return UserModel(
+      id: map['id'],
+      email: map['email'],
+      username: map['username'],
+      password: map['password'],
+      createdAt: map['created_at'],
+      updatedAt: map['updated_at'],
     );
   }
 
@@ -32,7 +40,6 @@ class UserModel extends UserEntity {
       createdAt: createdAt,
       updatedAt: updatedAt,
       password: password,
-      role: role,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:blog/core/common/theme/app_theme.dart';
+import 'package:blog/core/common/user/cubit/user_cubit.dart';
 import 'package:blog/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog/locator.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,10 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => locator.get<AuthBloc>())],
+      providers: [
+        BlocProvider(create: (context) => locator.get<UserCubit>()),
+        BlocProvider(create: (context) => locator.get<AuthBloc>()),
+      ],
       child: MaterialApp.router(
         routerConfig: locator.get<GoRouter>(),
         debugShowCheckedModeBanner: false,

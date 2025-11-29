@@ -1,3 +1,4 @@
+import 'package:blog/core/common/user/user_entity.dart';
 import 'package:blog/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:blog/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:blog/features/auth/data/models/signin_model.dart';
@@ -5,8 +6,7 @@ import 'package:blog/features/auth/data/models/signup_model.dart';
 import 'package:blog/features/auth/data/models/user_model.dart';
 import 'package:blog/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'
-    show AuthException, AuthResponse, PostgrestException;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryImp implements AuthRepository {
   final AuthRemoteDatasource authRemoteDatasource;
@@ -49,6 +49,20 @@ class AuthRepositoryImp implements AuthRepository {
       return left(e.message.toString());
     } on AuthException catch (e) {
       return left(e.message.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, UserEntity?>> getCurrentUser() async {
+    try {
+      final UserModel? userModel = await authLocalDatasource
+          .getCurrentUserFromDB();
+      if (userModel?.id == null || userModel?.id == '') {
+        return left('user not exist');
+      }
+      return right(userModel!.toEntity());
+    } on PostgrestException catch (e) {
+      return left(e.toString());
     }
   }
 }

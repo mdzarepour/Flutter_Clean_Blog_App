@@ -5,10 +5,8 @@ class UserEntity {
   final String password;
   final String createdAt;
   final String updatedAt;
-  final String role;
 
   UserEntity({
-    required this.role,
     required this.id,
     required this.email,
     required this.username,
