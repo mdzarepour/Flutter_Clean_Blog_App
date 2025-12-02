@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:blog/features/bog/data/models/blog_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class BlogRemoteDatasource {
   Future<Map?> publishBlog(BlogModel blogModel);
+  Future<String> uploadBlogImage({
+    required File file,
+    required String imageName,
+  });
 }
 
 class BlogRemoteDatasourceImp implements BlogRemoteDatasource {
@@ -20,6 +26,21 @@ class BlogRemoteDatasourceImp implements BlogRemoteDatasource {
     } on PostgrestException {
       rethrow;
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> uploadBlogImage({
+    required File file,
+    required String imageName,
+  }) async {
+    try {
+      final String imageUrl = await supabase.storage
+          .from('images')
+          .upload(imageName, file);
+      return imageUrl;
+    } on StorageException {
       rethrow;
     }
   }

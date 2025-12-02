@@ -5,6 +5,6 @@ sealed class BlogEvent {
 }
 
 class PublishBlogEvent extends BlogEvent {
-  final BlogModel blogModel;
-  PublishBlogEvent({required this.blogModel});
+  final UploadBlogParams uploadBlogParams;
+  PublishBlogEvent({required this.uploadBlogParams});
 }

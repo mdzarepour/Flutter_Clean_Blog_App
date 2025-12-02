@@ -17,11 +17,11 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
     on<PublishBlogEvent>(publishBlog);
   }
 
-  FutureOr<void> publishBlog(event, emit) async {
+  FutureOr<void> publishBlog(PublishBlogEvent event, emit) async {
     emit(state.copyWith(newPublishStatus: PublishLoading()));
 
     final Either either = await publishBlogUsecase.call(
-      params: event.blogModel,
+      params: event.uploadBlogParams,
     );
     either.fold(
       (errorMessage) {

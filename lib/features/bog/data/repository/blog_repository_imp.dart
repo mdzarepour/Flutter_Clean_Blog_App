@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:blog/features/bog/data/datsources/blog_remote_datasource.dart';
 import 'package:blog/features/bog/data/models/blog_model.dart';
 import 'package:blog/features/bog/domain/entities/blog_entity.dart';
@@ -12,6 +14,7 @@ class BlogRepositoryImp implements BlogRepository {
   @override
   Future<Either<String, BlogEntity>> publishBlog({
     required BlogModel blogModel,
+    required File file,
   }) async {
     try {
       final Map? blogData = await blogRemoteDatasource.publishBlog(blogModel);
@@ -19,6 +22,12 @@ class BlogRepositoryImp implements BlogRepository {
         return left('cant publish this blog');
       }
       final BlogModel model = BlogModel.fromJson(map: blogData);
+      print(model.imageUrl);
+      await blogRemoteDatasource.uploadBlogImage(
+        imageName: model.imageUrl,
+        file: file,
+      );
+
       return right(model.toEntity());
     } on PostgrestException catch (e) {
       return left(e.message);

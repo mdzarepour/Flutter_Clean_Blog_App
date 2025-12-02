@@ -8,6 +8,7 @@ import 'package:blog/core/common/widgets/loading_widget.dart';
 import 'package:blog/core/utils/image_helper.dart';
 import 'package:blog/core/utils/widget_helper.dart';
 import 'package:blog/features/bog/data/models/blog_model.dart';
+import 'package:blog/features/bog/domain/usecases/publish_blog_usecase.dart';
 import 'package:blog/features/bog/presentation/bloc/blog_bloc.dart';
 import 'package:blog/features/bog/presentation/bloc/status/publish_status.dart';
 import 'package:blog/features/bog/presentation/widget/grey_card_widget.dart';
@@ -15,6 +16,7 @@ import 'package:blog/locator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 class BlogPublishPage extends StatefulWidget {
@@ -153,6 +155,7 @@ class _BlogPublishPageState extends State<BlogPublishPage> {
               widgetHelper.showSnackbar(
                 message: '${status.blogEntity!.title} published successfully',
               );
+              context.pop();
             }
             if (status is PublishFail) {
               widgetHelper.showSnackbar(message: status.errorMessage);
@@ -167,14 +170,17 @@ class _BlogPublishPageState extends State<BlogPublishPage> {
     final authorId = context.read<UserCubit>().state as UserExist;
     BlocProvider.of<BlogBloc>(context).add(
       PublishBlogEvent(
-        blogModel: BlogModel(
-          authorId: authorId.userEntity!.id,
-          content: blogContentController.text,
-          title: blogTitleController.text,
-          topic: topics[selectedIndex!],
-          imageUrl: imageFile!.path,
-          id: Uuid().v1(),
-          createdAt: DateTime.now().toIso8601String(),
+        uploadBlogParams: UploadBlogParams(
+          blogModel: BlogModel(
+            authorId: authorId.userEntity!.id,
+            content: blogContentController.text,
+            title: blogTitleController.text,
+            topic: topics[selectedIndex!],
+            imageUrl: imageFile!.path.split('/').last,
+            id: Uuid().v1(),
+            createdAt: DateTime.now().toIso8601String(),
+          ),
+          file: imageFile!,
         ),
       ),
     );
