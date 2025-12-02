@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-class WidgetServices {
+class WidgetHelper {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   void showSnackbar({required String message}) {
-    print(message);
     ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:blog/core/common/user/user_entity.dart';
+import 'package:blog/core/common/user/entities/user_entity.dart';
 import 'package:blog/core/usecase/usecase.dart';
 import 'package:blog/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -16,9 +16,11 @@ class UserCubit extends Cubit<UserState> {
     final Either either = await getCurrentUserUsecase.call(params: NoParams());
     either.fold(
       (errorMessage) {
+        print(errorMessage);
         emit(UserNotExist(errorMessage: errorMessage));
       },
       (user) {
+        print(user.email);
         emit(UserExist(userEntity: user));
       },
     );

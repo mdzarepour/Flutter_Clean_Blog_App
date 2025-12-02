@@ -1,4 +1,4 @@
-import 'package:blog/core/common/user/user_entity.dart';
+import 'package:blog/core/common/user/entities/user_entity.dart';
 import 'package:blog/core/usecase/usecase.dart';
 import 'package:blog/features/auth/domain/repository/auth_repository.dart';
 

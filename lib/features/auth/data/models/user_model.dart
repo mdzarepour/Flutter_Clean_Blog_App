@@ -1,4 +1,4 @@
-import 'package:blog/core/common/user/user_entity.dart';
+import 'package:blog/core/common/user/entities/user_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserModel extends UserEntity {

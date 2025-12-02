@@ -1,4 +1,4 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:blog/core/common/user/entities/user_entity.dart';
 
 abstract class SigninStatus {}
 
@@ -7,8 +7,8 @@ class SigninInitial extends SigninStatus {}
 class SigninLoading extends SigninStatus {}
 
 class SigninSuccess extends SigninStatus {
-  final AuthResponse authResponse;
-  SigninSuccess({required this.authResponse});
+  final UserEntity userEntity;
+  SigninSuccess({required this.userEntity});
 }
 
 class SigninFail extends SigninStatus {

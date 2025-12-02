@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:blog/core/common/constants/app_colors.dart';
-import 'package:blog/core/common/theme/app_texttheme.dart';
+import 'package:blog/core/common/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingWidget extends StatelessWidget {
@@ -27,7 +27,7 @@ class OnboardingWidget extends StatelessWidget {
               from: 25,
               duration: Duration(seconds: 1),
               child: Text(
-                style: AppTexttheme.white30PoppinsBold,
+                style: AppTextTheme.white30PoppinsBold,
                 textAlign: TextAlign.center,
                 title,
               ),
@@ -38,7 +38,7 @@ class OnboardingWidget extends StatelessWidget {
               duration: Duration(seconds: 1),
               delay: Duration(milliseconds: 100),
               child: Text(
-                style: AppTexttheme.white17PoppinsRegular,
+                style: AppTextTheme.white17PoppinsRegular,
                 textAlign: TextAlign.center,
                 description,
               ),

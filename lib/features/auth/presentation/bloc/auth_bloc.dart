@@ -37,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (userEntity) {
         emit(
           state.coptyWith(
-            newSigninStatus: SigninSuccess(authResponse: userEntity),
+            newSigninStatus: SigninSuccess(userEntity: userEntity),
           ),
         );
       },

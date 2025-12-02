@@ -2,8 +2,8 @@ import 'package:blog/core/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AppTexttheme {
-  AppTexttheme._();
+class AppTextTheme {
+  AppTextTheme._();
 
   static final TextStyle white30PoppinsBold = GoogleFonts.poppins(
     fontSize: 30,

@@ -1,6 +1,7 @@
 import 'package:blog/core/common/theme/app_theme.dart';
 import 'package:blog/core/common/user/cubit/user_cubit.dart';
 import 'package:blog/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:blog/features/bog/presentation/bloc/blog_bloc.dart';
 import 'package:blog/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,8 +20,21 @@ class Application extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => locator.get<UserCubit>()),
-        BlocProvider(create: (context) => locator.get<AuthBloc>()),
+        BlocProvider(
+          create: (context) {
+            return locator.get<UserCubit>()..getCurrentUser();
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return locator.get<AuthBloc>();
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return locator.get<BlogBloc>();
+          },
+        ),
       ],
       child: MaterialApp.router(
         routerConfig: locator.get<GoRouter>(),
@@ -37,8 +51,3 @@ class Application extends StatelessWidget {
 // TODO add exit wrapper
 // TODO make pop up menu reusable
 //TODO navigation animations not works
-
-// 1 create profiles db
-// 2 create getcurentUser usecase
-// 3 use thisusecase for toggle auth because its gonna have a variable named isauthenticated
-// 4 we can use this getcurrentUser usecase when we need id for requests or post operations

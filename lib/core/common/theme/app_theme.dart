@@ -1,6 +1,6 @@
 import 'package:blog/core/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'app_texttheme.dart';
+import 'app_text_theme.dart';
 
 class AppTheme {
   AppTheme._();
@@ -8,7 +8,26 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.materialFirstBlue,
     filledButtonTheme: _getFilledButton(),
-    bottomSheetTheme: const BottomSheetThemeData(
+    appBarTheme: _getAppbarTheme(),
+    bottomSheetTheme: _getBottomSheetTheme(),
+    floatingActionButtonTheme: _getFloatinButtonTheme(),
+    inputDecorationTheme: _getInpuTheme(),
+    textButtonTheme: _getTextButtonTheme(),
+    checkboxTheme: const CheckboxThemeData(),
+    dividerTheme: _getDividerTheme(),
+  );
+
+  static AppBarThemeData _getAppbarTheme() {
+    return AppBarThemeData(
+      backgroundColor: AppColors.materialFirstBlue,
+      iconTheme: IconThemeData(color: Colors.white, size: 30),
+      titleTextStyle: AppTextTheme.white30PoppinsBold,
+      centerTitle: true,
+    );
+  }
+
+  static BottomSheetThemeData _getBottomSheetTheme() {
+    return const BottomSheetThemeData(
       backgroundColor: AppColors.materialThirdBlue,
       clipBehavior: Clip.hardEdge,
       shape: RoundedRectangleBorder(
@@ -17,10 +36,11 @@ class AppTheme {
           topRight: Radius.circular(20),
         ),
       ),
-    ),
-    floatingActionButtonTheme: _getFloatinButtonTheme(),
-    inputDecorationTheme: _getInpuTheme(),
-    textButtonTheme: TextButtonThemeData(
+    );
+  }
+
+  static TextButtonThemeData _getTextButtonTheme() {
+    return TextButtonThemeData(
       style: TextButton.styleFrom(
         fixedSize: Size(double.infinity, 60),
         shape: RoundedRectangleBorder(
@@ -29,17 +49,16 @@ class AppTheme {
         elevation: 0,
         backgroundColor: AppColors.materialSoftGrey,
       ),
-    ),
-    checkboxTheme: const CheckboxThemeData(),
-    dividerTheme: _getDividerTheme(),
-  );
+    );
+  }
 
   static FilledButtonThemeData _getFilledButton() {
     return FilledButtonThemeData(
       style: FilledButton.styleFrom(
+        padding: EdgeInsets.all(0),
         fixedSize: const Size.fromHeight(60),
         backgroundColor: AppColors.materialThirdBlue,
-        textStyle: AppTexttheme.white17PoppinsRegular,
+        textStyle: AppTextTheme.white17PoppinsRegular,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
@@ -70,10 +89,10 @@ class AppTheme {
     );
     return InputDecorationTheme(
       filled: true,
-      errorStyle: AppTexttheme.grey15DmSansRegular,
+      errorStyle: AppTextTheme.grey15DmSansRegular,
       fillColor: AppColors.materialThirdBlue,
       contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-      hintStyle: AppTexttheme.grey20DmSansRegular,
+      hintStyle: AppTextTheme.grey20DmSansRegular,
       enabledBorder: border(10),
       focusedBorder: border(20),
       border: border(10),

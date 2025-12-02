@@ -1,11 +1,13 @@
 import 'package:blog/core/common/constants/app_strings.dart';
-import 'package:blog/core/common/theme/app_texttheme.dart';
+import 'package:blog/core/common/theme/app_text_theme.dart';
+import 'package:blog/core/common/user/cubit/user_cubit.dart';
+import 'package:blog/core/common/widgets/loading_widget.dart';
 import 'package:blog/core/router/router_names.dart';
-import 'package:blog/core/services/widget_service.dart';
+import 'package:blog/core/utils/widget_helper.dart';
 import 'package:blog/features/auth/data/models/signin_model.dart';
 import 'package:blog/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog/features/auth/presentation/bloc/status/signin_status.dart';
-import 'package:blog/features/auth/presentation/widgets/auth_field.dart';
+import 'package:blog/core/common/widgets/custom_input.dart';
 import 'package:blog/features/auth/presentation/widgets/link_button.dart';
 import 'package:blog/locator.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +23,7 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-  final WidgetServices widgetServices = locator.get();
+  final WidgetHelper widgetServices = locator.get();
   final GlobalKey<FormState> formKey = GlobalKey();
 
   final TextEditingController emailController = TextEditingController();
@@ -59,38 +61,38 @@ class _SigninPageState extends State<SigninPage> {
     );
   }
 
-  LinkButton signupLink() {
+  Widget signupLink() {
     return LinkButton(
       text: 'Don\'t have an account?',
       routeName: RouterNames.signupPage,
     );
   }
 
-  Text _buildTitle() {
+  Widget _buildTitle() {
     return Text(
       textAlign: TextAlign.center,
-      style: AppTexttheme.white30PoppinsBold,
+      style: AppTextTheme.white30PoppinsBold,
       'Login To Blog',
     );
   }
 
-  AuthField _buildEmailField() {
-    return AuthField(
+  Widget _buildEmailField() {
+    return CustomInput(
       hint: 'email',
       icon: CupertinoIcons.mail,
       controller: emailController,
     );
   }
 
-  AuthField _buildPasswordField() {
-    return AuthField(
+  Widget _buildPasswordField() {
+    return CustomInput(
       hint: 'password',
       icon: CupertinoIcons.lock,
       controller: passwordController,
     );
   }
 
-  FilledButton _buildSignupButton() {
+  Widget _buildSignupButton() {
     return FilledButton(
       onPressed: () {
         if (formKey.currentState!.validate()) {
@@ -111,7 +113,8 @@ class _SigninPageState extends State<SigninPage> {
             widgetServices.showSnackbar(message: status.errorMessage);
           }
           if (status is SigninSuccess) {
-            context.push(RouterNames.homePage);
+            BlocProvider.of<UserCubit>(context).getCurrentUser();
+            context.push(RouterNames.blogPage);
           }
         },
         builder: (context, state) {
@@ -120,7 +123,7 @@ class _SigninPageState extends State<SigninPage> {
             return Text(SigninStrings.login);
           }
           if (status is SigninLoading) {
-            return CircularProgressIndicator();
+            return LoadingWidget();
           }
           return SizedBox.shrink();
         },
@@ -133,7 +136,7 @@ class _SigninPageState extends State<SigninPage> {
       children: [
         TextButton(
           child: Text(
-            style: AppTexttheme.white17PoppinsRegular,
+            style: AppTextTheme.white17PoppinsRegular,
             SigninStrings.forgotPassword,
           ),
           onPressed: () {},
@@ -141,7 +144,7 @@ class _SigninPageState extends State<SigninPage> {
         TextButton(
           onPressed: () {},
           child: Text(
-            style: AppTexttheme.white17PoppinsRegular,
+            style: AppTextTheme.white17PoppinsRegular,
             SigninStrings.dontGetEmail,
           ),
         ),

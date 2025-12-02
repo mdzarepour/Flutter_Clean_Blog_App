@@ -1,10 +1,11 @@
-import 'package:blog/core/common/theme/app_texttheme.dart';
+import 'package:blog/core/common/theme/app_text_theme.dart';
+import 'package:blog/core/common/widgets/loading_widget.dart';
 import 'package:blog/core/router/router_names.dart';
-import 'package:blog/core/services/widget_service.dart';
+import 'package:blog/core/utils/widget_helper.dart';
 import 'package:blog/features/auth/data/models/signup_model.dart';
 import 'package:blog/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog/features/auth/presentation/bloc/status/signup_status.dart';
-import 'package:blog/features/auth/presentation/widgets/auth_field.dart';
+import 'package:blog/core/common/widgets/custom_input.dart';
 import 'package:blog/features/auth/presentation/widgets/link_button.dart';
 import 'package:blog/locator.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +22,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final WidgetServices widgetServices = locator.get();
+  final WidgetHelper widgetServices = locator.get();
   final SupabaseClient supabse = locator.get();
   final GlobalKey<FormState> formKey = GlobalKey();
 
@@ -61,39 +62,39 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Text _buildTitle() {
+  Widget _buildTitle() {
     return Text(
       textAlign: TextAlign.center,
-      style: AppTexttheme.white30PoppinsBold,
+      style: AppTextTheme.white30PoppinsBold,
       'Sign Up Here ',
     );
   }
 
-  AuthField _buildUsernameField() {
-    return AuthField(
+  Widget _buildUsernameField() {
+    return CustomInput(
       hint: 'username',
       icon: CupertinoIcons.person,
       controller: usernameController,
     );
   }
 
-  AuthField _buildEmailField() {
-    return AuthField(
+  Widget _buildEmailField() {
+    return CustomInput(
       hint: 'email',
       icon: CupertinoIcons.mail,
       controller: emailController,
     );
   }
 
-  AuthField _buildPasswordField() {
-    return AuthField(
+  Widget _buildPasswordField() {
+    return CustomInput(
       hint: 'password',
       icon: CupertinoIcons.lock,
       controller: passwordController,
     );
   }
 
-  FilledButton _buildSignupButton() {
+  Widget _buildSignupButton() {
     return FilledButton(
       onPressed: () {
         if (formKey.currentState!.validate()) {
@@ -127,7 +128,7 @@ class _SignupPageState extends State<SignupPage> {
             return Text('Sign Up');
           }
           if (status is SignupLoading) {
-            return CircularProgressIndicator();
+            return LoadingWidget();
           }
           return SizedBox.shrink();
         },

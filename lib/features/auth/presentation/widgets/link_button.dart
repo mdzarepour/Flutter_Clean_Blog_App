@@ -1,4 +1,4 @@
-import 'package:blog/core/common/theme/app_texttheme.dart';
+import 'package:blog/core/common/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,7 +14,7 @@ class LinkButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 5,
-        children: [Text(style: AppTexttheme.white17PoppinsRegular, text)],
+        children: [Text(style: AppTextTheme.white17PoppinsRegular, text)],
       ),
     );
   }

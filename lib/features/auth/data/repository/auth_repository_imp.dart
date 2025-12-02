@@ -1,5 +1,4 @@
-import 'package:blog/core/common/user/user_entity.dart';
-import 'package:blog/features/auth/data/datasources/auth_local_datasource.dart';
+import 'package:blog/core/common/user/entities/user_entity.dart';
 import 'package:blog/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:blog/features/auth/data/models/signin_model.dart';
 import 'package:blog/features/auth/data/models/signup_model.dart';
@@ -10,14 +9,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryImp implements AuthRepository {
   final AuthRemoteDatasource authRemoteDatasource;
-  final AuthLocalDatasource authLocalDatasource;
-  AuthRepositoryImp({
-    required this.authRemoteDatasource,
-    required this.authLocalDatasource,
-  });
+  AuthRepositoryImp({required this.authRemoteDatasource});
 
   @override
-  Future<Either<String, AuthResponse>> signupUser({
+  Future<Either<String, UserEntity>> signupUser({
     required SignupModel signupModel,
   }) async {
     try {
@@ -25,14 +20,17 @@ class AuthRepositoryImp implements AuthRepository {
         signupModel: signupModel,
       );
       if (authResponse.user == null) return left('account don\'t created!');
-      return right(authResponse);
+      final UserModel userModel = UserModel.fromResponse(
+        user: authResponse.user!,
+      );
+      return right(userModel.toEntity());
     } on AuthException catch (e) {
       return left(e.message.toString());
     }
   }
 
   @override
-  Future<Either<String, AuthResponse>> signinUser({
+  Future<Either<String, UserEntity>> signinUser({
     required SigninModel signinModel,
   }) async {
     try {
@@ -43,8 +41,8 @@ class AuthRepositoryImp implements AuthRepository {
         return left('cant login now');
       }
       final userModel = UserModel.fromResponse(user: authResponse.user!);
-      authLocalDatasource.saveUserInDB(userModel: userModel);
-      return right(authResponse);
+      authRemoteDatasource.saveUserInDB(userModel: userModel);
+      return right(userModel.toEntity());
     } on PostgrestException catch (e) {
       return left(e.message.toString());
     } on AuthException catch (e) {
@@ -55,12 +53,13 @@ class AuthRepositoryImp implements AuthRepository {
   @override
   Future<Either<String, UserEntity?>> getCurrentUser() async {
     try {
-      final UserModel? userModel = await authLocalDatasource
-          .getCurrentUserFromDB();
-      if (userModel?.id == null || userModel?.id == '') {
+      final Map? userData = await authRemoteDatasource.getCurrentUserFromDB();
+      if (userData == null || userData.isEmpty) {
         return left('user not exist');
       }
-      return right(userModel!.toEntity());
+      final UserModel userModel = UserModel.fromJson(map: userData);
+
+      return right(userModel.toEntity());
     } on PostgrestException catch (e) {
       return left(e.toString());
     }
