@@ -22,7 +22,6 @@ class BlogRepositoryImp implements BlogRepository {
         return left('cant publish this blog');
       }
       final BlogModel model = BlogModel.fromJson(map: blogData);
-      print(model.imageUrl);
       await blogRemoteDatasource.uploadBlogImage(
         imageName: model.imageUrl,
         file: file,
@@ -33,6 +32,23 @@ class BlogRepositoryImp implements BlogRepository {
       return left(e.message);
     } catch (e) {
       return left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, List<BlogEntity>>> getAllBlogs() async {
+    try {
+      final List<Map> blogsData = await blogRemoteDatasource.getAllBlogs();
+      final List<BlogEntity> blogs = blogsData
+          .map<BlogEntity>(
+            (e) => BlogModel.fromJson(
+              map: e,
+            ).copyWith(newAuthourUsername: e['users']['username']).toEntity(),
+          )
+          .toList();
+      return right(blogs);
+    } on PostgrestException catch (e) {
+      return left(e.message);
     }
   }
 }

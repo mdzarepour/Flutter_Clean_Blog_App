@@ -1,6 +1,7 @@
 class BlogEntity {
   final String id;
   final String authorId;
+  final String? authorUsername;
   final String title;
   final String content;
   final String topic;
@@ -10,6 +11,7 @@ class BlogEntity {
   BlogEntity({
     required this.id,
     required this.authorId,
+    this.authorUsername,
     required this.content,
     required this.title,
     required this.topic,

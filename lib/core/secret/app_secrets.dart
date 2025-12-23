@@ -5,4 +5,8 @@ class AppSecrets {
   static const String _supabaseAnon =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5bmlmamV5ZHBsemxwcmpmZ3JtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0MDc5MDQsImV4cCI6MjA3OTk4MzkwNH0.YXp3yJe3oj3uVwToBmX6dUBwIK4sfySpCJMKje8McC0';
   static String get supabaseAnon => _supabaseAnon;
+
+  static const String _baseUrl =
+      'https://yynifjeydplzlprjfgrm.supabase.co/storage/v1/object/public/images/';
+  static String get baseUrl => _baseUrl;
 }

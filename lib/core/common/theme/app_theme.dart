@@ -55,7 +55,7 @@ class AppTheme {
   static FilledButtonThemeData _getFilledButton() {
     return FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.zero,
         fixedSize: const Size.fromHeight(60),
         backgroundColor: AppColors.materialThirdBlue,
         textStyle: AppTextTheme.white17PoppinsRegular,

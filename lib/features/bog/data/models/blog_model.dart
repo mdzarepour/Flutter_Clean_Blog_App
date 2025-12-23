@@ -4,6 +4,7 @@ class BlogModel extends BlogEntity {
   BlogModel({
     required super.id,
     required super.authorId,
+    super.authorUsername,
     required super.content,
     required super.title,
     required super.topic,
@@ -20,6 +21,27 @@ class BlogModel extends BlogEntity {
       authorId: map['author_id'],
       imageUrl: map['image_url'],
       createdAt: map['created_at'],
+    );
+  }
+  BlogModel copyWith({
+    String? newId,
+    String? newAuthorId,
+    String? newContent,
+    String? newTitle,
+    String? newTopic,
+    String? newImageUrl,
+    String? newCreatedAt,
+    String? newAuthourUsername,
+  }) {
+    return BlogModel(
+      id: newId ?? id,
+      authorId: newAuthorId ?? authorId,
+      authorUsername: newAuthourUsername ?? authorUsername,
+      content: newContent ?? content,
+      title: newTitle ?? title,
+      topic: newTopic ?? topic,
+      imageUrl: newImageUrl ?? imageUrl,
+      createdAt: newCreatedAt ?? createdAt,
     );
   }
 
@@ -44,6 +66,7 @@ class BlogModel extends BlogEntity {
       topic: topic,
       imageUrl: imageUrl,
       createdAt: createdAt,
+      authorUsername: authorUsername,
     );
   }
 }

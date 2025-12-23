@@ -133,11 +133,7 @@ class _BlogPublishPageState extends State<BlogPublishPage> {
       width: double.infinity,
       height: 90,
       child: FilledButton(
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            if (imageFile != null && selectedIndex != null) _publishBlog();
-          }
-        },
+        onPressed: () => _publishBlog(),
         child: BlocConsumer<BlogBloc, BlogState>(
           builder: (context, state) {
             final status = state.publishStatus;
@@ -167,23 +163,27 @@ class _BlogPublishPageState extends State<BlogPublishPage> {
   }
 
   _publishBlog() {
-    final authorId = context.read<UserCubit>().state as UserExist;
-    BlocProvider.of<BlogBloc>(context).add(
-      PublishBlogEvent(
-        uploadBlogParams: UploadBlogParams(
-          blogModel: BlogModel(
-            authorId: authorId.userEntity!.id,
-            content: blogContentController.text,
-            title: blogTitleController.text,
-            topic: topics[selectedIndex!],
-            imageUrl: imageFile!.path.split('/').last,
-            id: Uuid().v1(),
-            createdAt: DateTime.now().toIso8601String(),
+    if (_formKey.currentState!.validate()) {
+      if (imageFile != null && selectedIndex != null) {
+        final authorId = context.read<UserCubit>().state as UserExist;
+        BlocProvider.of<BlogBloc>(context).add(
+          PublishBlogEvent(
+            uploadBlogParams: UploadBlogParams(
+              blogModel: BlogModel(
+                id: Uuid().v1(),
+                createdAt: DateTime.now().toIso8601String(),
+                authorId: authorId.userEntity!.id,
+                content: blogContentController.text,
+                title: blogTitleController.text,
+                topic: topics[selectedIndex!],
+                imageUrl: imageFile!.path.split('/').last,
+              ),
+              file: imageFile!,
+            ),
           ),
-          file: imageFile!,
-        ),
-      ),
-    );
+        );
+      }
+    }
   }
 
   _selectBanner() async {

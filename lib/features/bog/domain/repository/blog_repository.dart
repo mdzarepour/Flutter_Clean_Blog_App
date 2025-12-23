@@ -9,4 +9,5 @@ abstract interface class BlogRepository {
     required BlogModel blogModel,
     required File file,
   });
+  Future<Either<String, List<BlogEntity>>> getAllBlogs();
 }

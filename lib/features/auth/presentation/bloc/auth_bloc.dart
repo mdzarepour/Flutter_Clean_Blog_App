@@ -56,12 +56,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         emit(state.coptyWith(newSignupStatus: SignupInitial()));
       },
-      (response) {
-        emit(
-          state.coptyWith(
-            newSignupStatus: SignupSuccess(authResponse: response),
-          ),
-        );
+      (user) {
+        emit(state.coptyWith(newSignupStatus: SignupSuccess(userEntity: user)));
       },
     );
   }

@@ -9,6 +9,7 @@ abstract interface class BlogRemoteDatasource {
     required File file,
     required String imageName,
   });
+  Future<List<Map>> getAllBlogs();
 }
 
 class BlogRemoteDatasourceImp implements BlogRemoteDatasource {
@@ -41,6 +42,18 @@ class BlogRemoteDatasourceImp implements BlogRemoteDatasource {
           .upload(imageName, file);
       return imageUrl;
     } on StorageException {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Map>> getAllBlogs() async {
+    try {
+      final List<Map> blogs = await supabase
+          .from('blogs')
+          .select('* , users(username)');
+      return blogs;
+    } on PostgrestException {
       rethrow;
     }
   }

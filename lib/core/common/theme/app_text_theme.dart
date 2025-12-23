@@ -51,4 +51,9 @@ class AppTextTheme {
     color: AppColors.materialWhite,
     fontWeight: FontWeight.w400,
   );
+  static final TextStyle white22PoppinsRegular = GoogleFonts.poppins(
+    fontSize: 22,
+    color: AppColors.materialWhite,
+    fontWeight: FontWeight.w400,
+  );
 }

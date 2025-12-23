@@ -107,7 +107,7 @@ class _SigninPageState extends State<SigninPage> {
         }
       },
       child: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           final status = state.signinStatus;
           if (status is SigninFail) {
             widgetServices.showSnackbar(message: status.errorMessage);

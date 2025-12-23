@@ -9,6 +9,6 @@ class AppColors {
   static const Color materialGrey = Color(0XFF8B8C9E);
   static const Color materialSoftGrey = Color.fromARGB(53, 139, 140, 158);
   static const Color materialPink = Color(0XFFE83D67);
-  static const Color materialGreen = Color(0XFF21BF73);
+  static const Color materialGreen = Color.fromARGB(255, 10, 125, 69);
   static const Color materialBlack = Color(0XFF000000);
 }
