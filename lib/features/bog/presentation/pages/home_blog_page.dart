@@ -14,14 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class BlogHomePage extends StatefulWidget {
-  const BlogHomePage({super.key});
+class HomeBlogPage extends StatefulWidget {
+  const HomeBlogPage({super.key});
 
   @override
-  State<BlogHomePage> createState() => _BlogHomePageState();
+  State<HomeBlogPage> createState() => _HomeBlogPageState();
 }
 
-class _BlogHomePageState extends State<BlogHomePage> {
+class _HomeBlogPageState extends State<HomeBlogPage> {
   final WidgetHelper widgetHelper = locator.get();
 
   @override
@@ -33,7 +33,7 @@ class _BlogHomePageState extends State<BlogHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Blog App')),
+      appBar: AppBar(scrolledUnderElevation: 0, title: Text('Blog App')),
       body: Center(
         child: BlocConsumer<BlogBloc, BlogState>(
           builder: (context, state) {
@@ -72,8 +72,9 @@ class _BlogHomePageState extends State<BlogHomePage> {
       padding: EdgeInsets.symmetric(vertical: 15),
       itemCount: blogsList.length,
       itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {},
+        return InkWell(
+          onTap: () =>
+              context.push(extra: blogsList[index], RouterNames.readBlogPage),
           child: BlogWidget(blog: blogsList[index]),
         );
       },

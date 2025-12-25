@@ -19,14 +19,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
-class BlogPublishPage extends StatefulWidget {
-  const BlogPublishPage({super.key});
+class PublishBlogPage extends StatefulWidget {
+  const PublishBlogPage({super.key});
 
   @override
-  State<BlogPublishPage> createState() => _BlogPublishPageState();
+  State<PublishBlogPage> createState() => _PublishBlogPageState();
 }
 
-class _BlogPublishPageState extends State<BlogPublishPage> {
+class _PublishBlogPageState extends State<PublishBlogPage> {
   final TextEditingController blogTitleController = TextEditingController();
   final TextEditingController blogContentController = TextEditingController();
 

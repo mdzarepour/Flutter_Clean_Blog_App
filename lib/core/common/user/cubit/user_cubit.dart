@@ -16,11 +16,9 @@ class UserCubit extends Cubit<UserState> {
     final Either either = await getCurrentUserUsecase.call(params: NoParams());
     either.fold(
       (errorMessage) {
-        print(errorMessage);
         emit(UserNotExist(errorMessage: errorMessage));
       },
       (user) {
-        print(user.email);
         emit(UserExist(userEntity: user));
       },
     );

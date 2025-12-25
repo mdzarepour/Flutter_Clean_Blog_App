@@ -2,11 +2,13 @@ import 'package:blog/core/common/user/cubit/user_cubit.dart';
 import 'package:blog/core/common/widgets/loading_widget.dart';
 import 'package:blog/core/router/router_names.dart';
 import 'package:blog/core/utils/widget_helper.dart';
-import 'package:blog/features/bog/presentation/pages/blog_publish_page.dart';
-import 'package:blog/features/bog/presentation/pages/blog_home_page.dart';
+import 'package:blog/features/bog/domain/entities/blog_entity.dart';
+import 'package:blog/features/bog/presentation/pages/publish_blog_page.dart';
+import 'package:blog/features/bog/presentation/pages/home_blog_page.dart';
 import 'package:blog/features/auth/presentation/pages/onboarding_page.dart';
 import 'package:blog/features/auth/presentation/pages/signin_page.dart';
 import 'package:blog/features/auth/presentation/pages/signup_page.dart';
+import 'package:blog/features/bog/presentation/pages/read_blog_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +30,7 @@ class AppRouter {
           return BlocBuilder<UserCubit, UserState>(
             builder: (context, state) {
               if (state is UserExist) {
-                return BlogHomePage();
+                return HomeBlogPage();
               }
               if (state is UserNotExist) {
                 return OnboardingPage();
@@ -53,20 +55,27 @@ class AppRouter {
       GoRoute(
         path: RouterNames.blogPage,
         pageBuilder: (context, state) {
-          return CupertinoPage(child: BlogHomePage());
+          return CupertinoPage(child: HomeBlogPage());
         },
       ),
       // blog pages -->
       GoRoute(
         path: RouterNames.blogPage,
         pageBuilder: (context, state) {
-          return CupertinoPage(child: BlogHomePage());
+          return CupertinoPage(child: HomeBlogPage());
         },
       ),
       GoRoute(
         path: RouterNames.addBlogPage,
         pageBuilder: (context, state) {
-          return CupertinoPage(child: BlogPublishPage());
+          return CupertinoPage(child: PublishBlogPage());
+        },
+      ),
+      GoRoute(
+        path: RouterNames.readBlogPage,
+        pageBuilder: (context, state) {
+          final blog = state.extra as BlogEntity;
+          return CupertinoPage(child: ReadBlogPage(blog: blog));
         },
       ),
     ],
